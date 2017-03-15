@@ -52,7 +52,6 @@ namespace SingleSignonAuth
             // Enable the application to use bearer tokens to authenticate users
             app.UseOAuthBearerTokens(OAuthOptions);
 
-            // Uncomment the following lines to enable logging in with third party login providers
             var mo = new MicrosoftAccountAuthenticationOptions()
             {
                 ClientId = ConfigurationManager.AppSettings["microsoftClientId"],
@@ -94,6 +93,7 @@ namespace SingleSignonAuth
                 ClientId = ConfigurationManager.AppSettings["googleClientId"],
                 ClientSecret = ConfigurationManager.AppSettings["googleClientSecret"]
             });
+
 
         }
     }

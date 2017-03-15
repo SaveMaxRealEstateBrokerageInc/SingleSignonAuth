@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SendGrid;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace SingleSignonAuth.Managers
     {
         public static async Task ExecuteEmailConfirmation(string toEmail, string callbackUrl)
         {
-            dynamic sg = new SendGrid.SendGridAPIClient("apiKey");
+            dynamic sg = new SendGridAPIClient(ConfigurationManager.AppSettings["sendGridApiKey"]);
             string data = @"{
               'personalizations':
                 [
@@ -41,15 +42,15 @@ namespace SingleSignonAuth.Managers
                       'value': 'Please click <a href=""" + callbackUrl + @""">here</a> for Email Confirmation'
                     }
                 ],      
-                'template_id': 'd6f62767-04ae-48fd-ac2a-1b0d32774e3d',     
+                'template_id': '" + ConfigurationManager.AppSettings["templateIdForEmailConfirmation"] + @"',     
             }";
 
             Object json = Newtonsoft.Json.JsonConvert.DeserializeObject<Object>(data);
             dynamic response = await sg.client.mail.send.post(requestBody: json.ToString());
         }
-        public static async Task ExecuteChangePassword(string toEmail, string callbackUrl)
+        public static async Task ExecuteForgetPassword(string toEmail, string callbackUrl)
         {
-            dynamic sg = new SendGrid.SendGridAPIClient("apikey");
+            dynamic sg = new SendGridAPIClient(ConfigurationManager.AppSettings["sendGridApiKey"]);
             string data = @"{
               'personalizations':
                 [
@@ -79,7 +80,7 @@ namespace SingleSignonAuth.Managers
                       'value': 'Please click <a href=""" + callbackUrl + @""">here</a> for Changing Password'
                     }
                 ],      
-                'template_id': 'd6f62767-04ae-48fd-ac2a-1b0d32774e3d',     
+                'template_id': '" + ConfigurationManager.AppSettings["templateIdForForgetPassword"] + @"',     
             }";
 
             Object json = Newtonsoft.Json.JsonConvert.DeserializeObject<Object>(data);

@@ -388,8 +388,8 @@ namespace SingleSignonAuth.Controllers
                 {
                     // Send an email with this link
                     string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                    string callbackUrl = Url.Link("Default", new { controller = "User/ManageAccount/reset-password", userId = user.Id, code = code });
-                    SendgridManager.ExecuteChangePassword(user.Email, callbackUrl).Wait();
+                    string callbackUrl = Url.Link("Default", new { controller = "User/ManageAccount/ResetPassword", userId = user.Id, code = code });
+                    SendgridManager.ExecuteForgetPassword(user.Email, callbackUrl).Wait();
                     return Ok();
                 }
                 catch (Exception ex)
@@ -578,5 +578,4 @@ namespace SingleSignonAuth.Controllers
 
         #endregion
     }
-
 }
